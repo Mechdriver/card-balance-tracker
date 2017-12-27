@@ -2,7 +2,7 @@
   "name": "card-balance-tracker",
   "version": "1.0.0",
   "description": "Application to track a shared balance using SMS messages.",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,7 +17,10 @@
   },
   "homepage": "https://github.com/Mechdriver/card-balance-tracker#readme",
   "dependencies": {
+    "assert": "^1.4.1",
     "express": "^4.16.2",
-    "later": "^1.2.0"
+    "later": "^1.2.0",
+    "lodash": "^4.17.4",
+    "mongodb": "^3.0.0-rc0"
   }
 }
