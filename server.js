@@ -1,13 +1,11 @@
 const _ = require('lodash');
+const http = require('http');
 const express = require('express');
 const later = require('later');
 const assert = require('assert');
 const MongoClient = require('mongodb').MongoClient;
 
 const app = express();
-
-//TODO: Change to an environemnt var
-const dbPass = 'python04';
 
 // Connection URL
 const dbUrl = 'mongodb://zbehnke:' + dbPass + '@ds123896.mlab.com:23896/card-tracker';
@@ -30,7 +28,6 @@ initTransactionCollection();
 
 function initTransactionCollection() {
   //Amount, User, Date
-
   MongoClient.connect(dbUrl, function(err, client) {
     assert.equal(null, err);
     console.log("Connected successfully to server.");
