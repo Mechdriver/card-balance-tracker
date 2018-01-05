@@ -1,11 +1,17 @@
 const _ = require('lodash');
 const http = require('http');
 const express = require('express');
+
 const later = require('later');
+
 const assert = require('assert');
+
 const MongoClient = require('mongodb').MongoClient;
+const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
 const app = express();
+
+const dbPass = process.env.DB_PASS;
 
 // Connection URL
 const dbUrl = 'mongodb://zbehnke:' + dbPass + '@ds123896.mlab.com:23896/card-tracker';
@@ -26,16 +32,30 @@ let now = new Date();
 
 initTransactionCollection();
 
+app.post('/sms', (req, res) => {
+  let twiml = new MessagingResponse();
+
+  twiml.message("This is a generic test response. You're welcome");
+
+  res.writeHead(200, {'Content-Type': 'text/xml'});
+  res.end(twiml.toString());
+});
+
+http.createServer(app).listen(1337, () => {
+  console.log('Express server listening on port 1337');
+});
+
+//TODO: Move DB functionality elsewhere maybe
 function initTransactionCollection() {
   //Amount, User, Date
-  MongoClient.connect(dbUrl, function(err, client) {
+  MongoClient.connect(dbUrl, (err, client) => {
     assert.equal(null, err);
     console.log("Connected successfully to server.");
 
     let db = client.db(dbName);
     let collection = db.collection('transactions');
 
-    collection.find().toArray(function(err, transactions) {
+    collection.find().toArray((err, transactions) => {
       if (!transactions.length) {
         console.log("Creating initial transaction.")
         //Initial default insertion of $150
@@ -54,7 +74,7 @@ function initTransactionCollection() {
 }
 
 function insertTransaction() {
-  MongoClient.connect(dbUrl, function(err, client) {
+  MongoClient.connect(dbUrl, (err, client) => {
     assert.equal(null, err);
     console.log("Connected successfully to server");
 
@@ -65,7 +85,7 @@ function insertTransaction() {
 }
 
 function refreshFunds() {
-  MongoClient.connect(dbUrl, function(err, client) {
+  MongoClient.connect(dbUrl, (err, client) => {
     assert.equal(null, err);
     console.log("Connected successfully to server");
 
@@ -76,7 +96,7 @@ function refreshFunds() {
 }
 
 function addNewUser() {
-  MongoClient.connect(dbUrl, function(err, client) {
+  MongoClient.connect(dbUrl, (err, client) => {
     assert.equal(null, err);
     console.log("Connected successfully to server");
 
@@ -87,7 +107,7 @@ function addNewUser() {
 }
 
 function getRemainingBalance() {
-  MongoClient.connect(dbUrl, function(err, client) {
+  MongoClient.connect(dbUrl, (err, client) => {
     assert.equal(null, err);
     console.log("Connected successfully to server");
 

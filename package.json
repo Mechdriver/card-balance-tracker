@@ -21,6 +21,7 @@
     "express": "^4.16.2",
     "later": "^1.2.0",
     "lodash": "^4.17.4",
-    "mongodb": "^3.0.0-rc0"
+    "mongodb": "^3.0.0-rc0",
+    "twilio": "^3.11.0"
   }
 }
