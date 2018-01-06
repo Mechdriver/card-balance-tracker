@@ -2,6 +2,8 @@ const _ = require('lodash');
 const http = require('http');
 const express = require('express');
 
+const bodyParser = require('body-parser');
+
 const later = require('later');
 
 const assert = require('assert');
@@ -10,6 +12,10 @@ const MongoClient = require('mongodb').MongoClient;
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
 const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
 const dbPass = process.env.DB_PASS;
 
@@ -35,10 +41,12 @@ initTransactionCollection();
 app.post('/sms', (req, res) => {
   let twiml = new MessagingResponse();
 
-  twiml.message("This is a generic test response. You're welcome");
+  //twiml.message("This is a generic test response. You're welcome");
+
+  console.log(req.body.Body);
 
   res.writeHead(200, {'Content-Type': 'text/xml'});
-  res.end(twiml.toString());
+  res.end();
 });
 
 http.createServer(app).listen(1337, () => {
